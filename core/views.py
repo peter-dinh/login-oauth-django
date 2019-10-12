@@ -25,11 +25,11 @@ def profile(request, **kw):
     profile = Profile.objects.filter(account=request.user)
     extra_data = request.user.social_auth.filter(provider='facebook')[0].extra_data
     if not profile.exists():
-        profile = Profile.objects.create(
+        profile = [Profile.objects.create(
             name=request.user.first_name + ' ' + request.user.last_name,
             account=request.user,
             email=extra_data['email'],
-        )
+        )]
     activities = Activity.objects.filter(account=request.user).order_by('-date')
     return render(request, 'profile.html', {
         'profile': profile[0],

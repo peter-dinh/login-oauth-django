@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
 from django.http import HttpResponse, Http404, JsonResponse
@@ -7,15 +7,21 @@ from datetime import datetime
 from django.core.serializers.json import DjangoJSONEncoder
 
 # Create your views here.
+
 def login(request):
-    
+    if request.user.pk:
+        return redirect('/profile') 
     return render(request, 'login.html')
   
 def register(request):
+    if request.user.pk:
+        return redirect('/profile')
     return render(request, 'register.html')
 
-# @login_required
+@login_required
 def profile(request, **kw):
+    if not request.user.pk:
+        return redirect('/login')
     profile = Profile.objects.filter(account=request.user)
     extra_data = request.user.social_auth.filter(provider='facebook')[0].extra_data
     if not profile.exists():
@@ -67,3 +73,4 @@ def update_profile(request, **kw):
             return  HttpResponse(json.dumps(data_response, sort_keys=False, indent=1, cls=DjangoJSONEncoder), content_type="application/json")
         return Http404
     return Http404
+

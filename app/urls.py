@@ -17,12 +17,17 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from core import views
+from django.shortcuts import redirect
+
+def redirect(request):
+    return redirect('login')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("login/",  views.login, name="login"),
     path("register/",  views.register, name="register"),
     path("logout/", auth_views.LogoutView.as_view(), name="logout"),
+    path('', views.login),
     path('profile', views.profile,name='profile'),
     path('update_profile', views.update_profile,name='update_profile'),
     path('oauth/', include('social_django.urls', namespace='social')), 

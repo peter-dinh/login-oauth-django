@@ -21,10 +21,7 @@ $(document).ready(function(){
                 console.log(response)
                 if (response){
                     alert('Update Success!');
-                    $('#agree').prop('checked', false);
-                    check_agrre_termsand_conditions();
-                    activaTab('activity');
-                    $('#new_active').prepend()
+                    window.location.reload();
                 }
             },
         });

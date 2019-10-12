@@ -24,7 +24,7 @@ def profile(request, **kw):
             account=request.user,
             email=extra_data['email'],
         )
-    activities = Activity.objects.filter(account=request.user)
+    activities = Activity.objects.filter(account=request.user).order_by('-date')
     return render(request, 'profile.html', {
         'profile': profile[0],
         'activities': activities,
@@ -35,24 +35,24 @@ def update_profile(request, **kw):
         profiles = Profile.objects.filter(account=request.user)
         if profiles.exists():
             profile = profiles[0]
-            log = 'Update Data\n'
+            log = 'Update Data<br /><br />'
             if profile.name != request.POST.get('inputName'):
-                log += 'Name: %s  ->  %s\n' % (profile.name, request.POST.get('inputName'))
+                log += 'Name: %s  ->  %s<br />' % (profile.name, request.POST.get('inputName'))
                 profile.name = request.POST.get('inputName')
             if profile.job != request.POST.get('inputJob'):
-                log += 'Job: %s  ->  %s\n' % (profile.job, request.POST.get('inputJob'))
+                log += 'Job: %s  ->  %s<br />' % (profile.job, request.POST.get('inputJob'))
                 profile.job = request.POST.get('inputJob')
             if profile.location != request.POST.get('inputLocation'):
-                log += 'Location: %s  ->  %s\n' % (profile.location, request.POST.get('inputLocation'))
+                log += 'Location: %s  ->  %s<br />' % (profile.location, request.POST.get('inputLocation'))
                 profile.location = request.POST.get('inputLocation')
-            if profile.name != request.POST.get('inputEducation'):
-                log += 'Education: %s  ->  %s\n' % (profile.name, request.POST.get('inputEducation'))
+            if profile.education != request.POST.get('inputEducation'):
+                log += 'Education: %s  ->  %s<br />' % (profile.education, request.POST.get('inputEducation'))
                 profile.education = request.POST.get('inputEducation')
-            if profile.name != request.POST.get('inputSkills'):
-                log += 'Skills: %s  ->  %s\n' % (profile.name, request.POST.get('inputSkills'))
+            if profile.skills != request.POST.get('inputSkills'):
+                log += 'Skills: %s  ->  %s<br />' % (profile.skills, request.POST.get('inputSkills'))
                 profile.skills = request.POST.get('inputSkills')
-            if profile.name != request.POST.get('inputExperience'):
-                log += 'Experience: %s  ->  %s\n' % (profile.name, request.POST.get('inputExperience'))
+            if profile.experience != request.POST.get('inputExperience'):
+                log += 'Experience: %s  ->  %s<br />' % (profile.experience, request.POST.get('inputExperience'))
                 profile.experience = request.POST.get('inputExperience')
 
             profile.save()
